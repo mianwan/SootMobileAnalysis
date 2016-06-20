@@ -1,4 +1,4 @@
-package edu.usc.sql.method;
+package edu.usc.sql.log;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
