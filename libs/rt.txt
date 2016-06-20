@@ -1,0 +1,1 @@
+java -jar soot-trunk.jar -src-prec c -cp .:/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/rt.jar -f J testers.VeryBusyClass
