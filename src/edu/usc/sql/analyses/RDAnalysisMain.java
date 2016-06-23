@@ -23,8 +23,8 @@ public class RDAnalysisMain {
 
     public static void main(String[] args) {
         String cp = "/home/mianwan/AppSet";
-        String apk = cp + File.separator + "com.liveleak.liveleak.apk";
-        String clsList = cp + File.separator + "com.liveleak.liveleak.txt";
+        String apk = cp + File.separator + "com.financial.calculator.apk";
+        String clsList = cp + File.separator + "com.financial.calculator.txt";
 
         try {
 //            JavaAppRDAnalysis(cp);
@@ -112,14 +112,14 @@ public class RDAnalysisMain {
                 continue;
             }
 
-            if (!sc.getName().equals("com.actionbarsherlock.internal.widget.ActionBarContextView"))
+            if (!sc.getName().equals("com.financial.calculator.br"))
                 continue;
 
             PrintWriter pw = new PrintWriter(new FileOutputStream("/home/mianwan/RD/"+ sc.getName() +".txt"));
 
             for (SootMethod sm : sc.getMethods()) {
                 if (sm.isConcrete()) {
-                    if (!(sm.getName().equals("initTitle")))
+                    if (!(sm.getName().equals("a")))
                         continue;
                     Body body = sm.retrieveActiveBody();
 

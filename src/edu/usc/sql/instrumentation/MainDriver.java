@@ -12,6 +12,7 @@ import java.io.File;
 /**
  * Created by mian on 6/22/16.
  * https://www.sable.mcgill.ca/soot/tutorial/   More on profiling
+ * argument example: TestInvoke
  */
 public class MainDriver {
     public static void main(String[] args) {
@@ -22,13 +23,14 @@ public class MainDriver {
             System.exit(0);
         }
 
+        /* since load MyCounter in InvokeStaticInstrumenter's <cinit>, thus
+         * use code to set soot class path
+         */
+        String s = Scene.v().getSootClassPath() + File.pathSeparator + "/home/mianwan/AppSet/testers";
+        Scene.v().setSootClassPath(s);
+//        Options.v().set_output_format(Options.output_format_class);
 
-        String s = Scene.v().getSootClassPath() + File.pathSeparator + "/Users/mian/Documents";
-        System.out.println(s.contains("mian"));
-        Options.v().set_soot_classpath(s);
-        Options.v().set_output_format(Options.output_format_class);
 
-        Scene.v().loadClassAndSupport("MyCounter");
         /* add a phase to transformer pack by call Pack.add */
         Pack jtp = PackManager.v().getPack("jtp");
         jtp.add(new Transform("jtp.instrumenter",

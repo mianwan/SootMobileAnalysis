@@ -6,7 +6,7 @@ package edu.usc.sql.instrumentation;
 import soot.*;
 import soot.jimple.*;
 import soot.util.*;
-import sun.tools.tree.ReturnStatement;
+
 
 import java.util.*;
 
@@ -20,7 +20,7 @@ public class InvokeStaticInstrumenter extends BodyTransformer{
     static SootMethod increaseCounter, reportCounter;
 
     static {
-        counterClass    = Scene.v().getSootClass("MyCounter");
+        counterClass    = Scene.v().loadClassAndSupport("MyCounter");;
         increaseCounter = counterClass.getMethod("void increase(int)");
         reportCounter   = counterClass.getMethod("void report()");
     }

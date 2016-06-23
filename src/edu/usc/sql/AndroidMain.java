@@ -47,7 +47,7 @@ public class AndroidMain {
                                 Value value = ie.getArg(0);
                                 // For IntConstant, toString() can get its value
 
-                               /* bw.write("" + ++i);
+                                bw.write("" + ++i);
                                 bw.write("\n");
                                 bw.write("Class:" + sc.getName());
                                 bw.write("\n");
@@ -58,7 +58,7 @@ public class AndroidMain {
                                 bw.write("Value:" + value);
                                 bw.write("\n");
                                 bw.write("===================");
-                                bw.write("\n");*/
+                                bw.write("\n");
                                 /**if (!(value instanceof Constant)) {
                                     bw.write("" + ++i);
                                     bw.write("\n");
@@ -74,7 +74,7 @@ public class AndroidMain {
                                     bw.write("\n");
                                 }*/
                             }
-                            if (callee.getName().equals("addView")) {
+                            /*if (callee.getName().equals("addView")) {
                                 bw.write("" + ++i);
                                 bw.write("\n");
                                 bw.write("Class:" + sc.getName());
@@ -85,7 +85,7 @@ public class AndroidMain {
                                 bw.write("\n");
                                 bw.write("===================");
                                 bw.write("\n");
-                            }
+                            }*/
                         }
                     }
                 }
