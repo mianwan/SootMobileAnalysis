@@ -9,6 +9,7 @@ import java.util.Map;
 
 /**
  * Created by mianwan on 6/23/16.
+ * command argument: -cp /home/mianwan/AppSet:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/rt.jar testers.Aa
  */
 public class BranchInstrumenter extends BodyTransformer {
 
@@ -57,7 +58,6 @@ public class BranchInstrumenter extends BodyTransformer {
             Stmt stmt = (Stmt)stmtIt.next();
 
             if (stmt instanceof IfStmt) {
-                Stmt target = ((IfStmt) stmt).getTarget();
 
                 Local tmpRef = addTmpRef(body);
                 Local tmpString = addTmpString(body);
@@ -69,14 +69,17 @@ public class BranchInstrumenter extends BodyTransformer {
                 SootMethod toCall = Scene.v().getMethod("<java.io.PrintStream: void println(java.lang.String)>");
                 InvokeStmt toAdded3 = Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(tmpRef, toCall.makeRef(), tmpString));
 
-                // Insert a statement before the target
+                // Insert a statement before the target of if branch
                 /*
+                Stmt target = ((IfStmt) stmt).getTarget();
+
                 units.insertBefore(toAdded1, target);
                 units.insertBefore(toAdded2, target);
                 units.insertBefore(toAdded3, target);
 
                 ((IfStmt) stmt).setTarget(toAdded1);
                 */
+
                 // Instrument the else branch (1)
 //                units.insertAfter(toAdded3, stmt);
 //                units.insertAfter(toAdded2, stmt);
