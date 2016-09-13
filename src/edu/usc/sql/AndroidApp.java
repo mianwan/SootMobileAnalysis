@@ -1,5 +1,6 @@
 package edu.usc.sql;
 
+import edu.usc.sql.callgraph.CustomCallGraph;
 import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
@@ -20,6 +21,8 @@ import java.util.Set;
 public class AndroidApp {
     // All classes in the app
     private Set<SootClass> allClasses = new HashSet<SootClass>();
+    private Set<SootMethod> allMethods = new HashSet<SootMethod>();
+    private CustomCallGraph callGraph;
 
     public AndroidApp(String androidJarPath, String apkPath, String classListPath) {
         Options.v().set_src_prec(Options.src_prec_apk);
@@ -34,7 +37,6 @@ public class AndroidApp {
         Options.v().set_process_dir(dirList);
 
         ArrayList<SootMethod> entryPoints = new ArrayList<SootMethod>();
-        Set<SootMethod> allMethods = new HashSet<SootMethod>();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(classListPath));
@@ -43,26 +45,26 @@ public class AndroidApp {
                 SootClass sc = Scene.v().loadClassAndSupport(className);
 
                 // Ignore android support classes
-                if (!sc.getName().startsWith("android.support")) {
+                if (!sc.getName().startsWith("android.support") && !sc.getName().startsWith("com.google")) {
                     sc.setApplicationClass();
                     allClasses.add(sc);
                     allMethods.addAll(sc.getMethods());
                     try {
-                        SootMethod onCreate = sc.getMethodByName("onCreate");
-                        SootMethod doInBackground = sc.getMethodByName("doInBackground");
+                        SootMethod onCreate = sc.getMethod("void onCreate(android.os.Bundle)");
+//                        SootMethod doInBackground = sc.getMethodByName("doInBackground");
 
                         if (onCreate.isConcrete()) {
                             entryPoints.add(onCreate);
-                            System.out.println(onCreate);
+                            System.out.println(onCreate.getSubSignature());
                         }
 
-                        if (doInBackground.isConcrete()) {
-                            entryPoints.add(doInBackground);
-                            System.out.println(onCreate);
-                        }
+//                        if (doInBackground.isConcrete()) {
+//                            entryPoints.add(doInBackground);
+//                            System.out.println(onCreate);
+//                        }
 
                     } catch (RuntimeException e) {
-                       System.out.println(className + "doesn't have the target entry method!");
+//                       System.out.println(className + "doesn't have the target entry method!");
                     }
 
                 }
@@ -74,12 +76,16 @@ public class AndroidApp {
         }
 
         Scene.v().loadNecessaryClasses();
-//        Scene.v().setEntryPoints(entryPoints);
-//        CHATransformer.v().transform();
-//        CallGraph cg = Scene.v().getCallGraph();
+        Scene.v().setEntryPoints(entryPoints);
+        CHATransformer.v().transform();
+        callGraph = new CustomCallGraph(Scene.v().getCallGraph(), allMethods);
     }
 
     public Set<SootClass> getAllClasses() {
         return allClasses;
+    }
+
+    public CustomCallGraph getCallGraph() {
+        return callGraph;
     }
 }
